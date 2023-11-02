@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Daily Task App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #007BFF;
+    }
+
+    .input-container {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+      text-align: center;
+      color: #7e20ff;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .add-button {
+      background-color: #5b4563;
+      color: #fff;
+      border: 5px solid #ede2e2;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.5s;
+    }
+
+    .add-button:hover {
+      background-color: #0056b3;
+    }
+
+    .task-summary-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .task-box,
+    .summary-box {
+      background-color: #f4f4f4;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      max-height: 50vh;
+      overflow-y: auto;
+      transition: background-color 0.3s;
+      flex: 1;
+      margin: 10px;
+    }
+
+    #summaryBox h2 {
+      font-family: 'Your Custom Font', sans-serif;
+      font-size: 24px;
+      color: #333;
+    }
+
+    #summaryContent {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 16px;
+      color: #531acd;
+      font-weight: bold;
+
+
+
+    }
+
+    .task-box:hover,
+    .summary-box:hover {
+      background-color: #f0f0f0;
+    }
+
+    .scrollable-tasks {
+      max-height: 300px;
+      overflow-y: auto;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .task-item span {
+      flex: 1;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      position: relative;
+      text-align: left;
+    }
+
+    .task-item.completed {
+      background-color: #a8d3f7;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .task-checkbox {
+      margin-right: 10px;
+      align-self: center;
+    }
+
+    .task-text {
+      flex: 1;
+      align-self: center;
+      margin-right: 10px;
+    }
+
+    .edit-button {
+      background-color: #d5a71d;
+      border: 2px solid #e3dbdb;
+      color: #333;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    .delete-button {
+      background-color: #e3e0d7;
+      border: 2px solid #ffff;
+      color: #333;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    .edit-button:hover {
+      background-color: #e0a800;
+
+    }
+
+    .delete-button:hover {
+      background-color: #f0ece1;
+    }
+
+    #selectedDateTasksContent {
+      border: 5px solid #edebeb;
+      border-radius: 30px;
+      font-family: 'Your Custom Font', sans-serif;
+      margin-left: 10px;
+      font-size: 16px;
+      color: #333;
+      padding: 10px;
+      width: 80%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Daily Task App</h1>
+    <div class="input-container">
+      <label class="input-label" for="date">Select Date</label>
+      <input type="date" id="date" class="input-field">
+    </div>
+    <div class="input-container">
+      <label class="input-label" for="name">Your Name</label>
+      <input type="text" id="name" class="input-field" placeholder="Your Name">
+    </div>
+    <input type="text" id="task-input" class="input-field" placeholder="Add a new task">
+    <div class="button-container">
+      <button onclick="addTask()" class="add-button">Add Task</button>
+      <button onclick="saveTodayTasks()" class="add-button">Save Today's Tasks</button>
+    </div>
+    <div class="task-summary-container">
+      <div class="task-box" id="todayTasksBox">
+        <h2>Today's Tasks</h2>
+        <div class="scrollable-tasks">
+          <ul class="task-list" id="tasks">
+
+          </ul>
+        </div>
+      </div>
+      <div class="summary-box" id="summaryBox">
+        <h2>Summary</h2>
+        <div id="summaryContent"></div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <label for="selectDate">Select Date:</label>
+      <input type="date" id="selectDate" class="input-field">
+      <button onclick="viewSelectedDateTasks()" class="add-button">View Tasks</button>
+    </div>
+    <div id="selectedDateTasksBox">
+      <h2>Selected Date Tasks</h2>
+      <div id="selectedDateTasksContent"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      renderTasks(tasks);
+    });
+
+    function saveTasks(tasks) {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById('task-input');
+      const taskText = taskInput.value.trim();
+      if (taskText === '') return;
+
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      const currentDate = document.getElementById('date').value;
+      tasks.push({ text: taskText, completed: false, date: currentDate });
+      saveTasks(tasks);
+      taskInput.value = '';
+      renderTasks(tasks);
+    }
+
+    function toggleTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks[index].completed = !tasks[index].completed;
+      saveTasks(tasks);
+      renderTasks(tasks);
+    }
+
+    function deleteTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.splice(index, 1);
+      saveTasks(tasks);
+      renderTasks(tasks);
+    }
+
+    function editTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      const updatedTaskText = prompt('Edit the task:', tasks[index].text);
+      if (updatedTaskText !== null) {
+        tasks[index].text = updatedTaskText;
+        saveTasks(tasks);
+        renderTasks(tasks);
+      }
+    }
+
+    function renderTasks(tasks) {
+      const tasksList = document.getElementById('tasks');
+      tasksList.innerHTML = '';
+
+      tasks.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.className = 'task-item' + (task.completed ? ' completed' : '');
+        taskItem.innerHTML = `
+      <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${index})">
+      <span>${task.text}</span>
+      <button class="edit-button" onclick="editTask(${index})">Edit</button>
+      <button class="delete-button" onclick="deleteTask(${index})">Delete</button>
+    `;
+        tasksList.appendChild(taskItem);
+      });
+    }
+
+    function saveTodayTasks() {
+      const currentDate = new Date().toISOString().slice(0, 10);
+      const nameInput = document.getElementById('name');
+      const name = nameInput.value;
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+      const todayTasks = tasks.filter(task => {
+        return task.date === currentDate;
+      });
+
+      const summaryBox = document.getElementById('summaryBox');
+      const summaryContent = document.getElementById('summaryContent');
+      summaryContent.innerHTML = '';
+
+      summaryBox.style.display = 'block';
+
+      summaryContent.innerHTML += `<div>Date: ${currentDate}</div><div>Name: ${name}</div><br>`;
+      tasks.forEach((task, index) => {
+        summaryContent.innerHTML += `
+          <div>Task ${index + 1}: ${task.text} (Completed: ${task.completed ? 'Yes' : 'No'})</div>
+        `;
+      });
+    }
+
+    function viewSelectedDateTasks() {
+      const selectedDate = document.getElementById('selectDate').value;
+      const nameInput = document.getElementById('name');
+      const name = nameInput.value;
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+      const selectedDateTasks = tasks.filter(task => {
+        return task.date === selectedDate;
+      });
+
+      const selectedDateTasksBox = document.getElementById('selectedDateTasksBox');
+      const selectedDateTasksContent = document.getElementById('selectedDateTasksContent');
+      selectedDateTasksContent.innerHTML = '';
+
+      selectedDateTasksBox.style.display = 'block';
+
+      if (selectedDateTasks.length === 0) {
+        selectedDateTasksContent.innerHTML = 'No tasks for the selected date.';
+      } else {
+        selectedDateTasksContent.innerHTML += `<div>Date: ${selectedDate}</div><div>Name: ${name}</div><br>`;
+        selectedDateTasks.forEach((task, index) => {
+          selectedDateTasksContent.innerHTML += `
+            <div>Task ${index + 1}: ${task.text} (Completed: ${task.completed ? 'Yes' : 'No'})</div>
+          `;
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>

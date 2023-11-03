@@ -310,29 +310,30 @@
       });
     }
 
-    function saveTodayTasks() {
-      const currentDate = new Date().toISOString().slice(0, 10);
-      const nameInput = document.getElementById('name');
-      const name = nameInput.value;
-      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+function saveTodayTasks() {
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const nameInput = document.getElementById('name');
+  const name = nameInput.value;
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-      const todayTasks = tasks.filter(task => {
-        return task.date === currentDate;
-      });
+  const todayTasks = tasks.filter(task => {
+    return task.date === currentDate;
+  });
 
-      const summaryBox = document.getElementById('summaryBox');
-      const summaryContent = document.getElementById('summaryContent');
-      summaryContent.innerHTML = '';
+  const summaryBox = document.getElementById('summaryBox');
+  const summaryContent = document.getElementById('summaryContent');
+  summaryContent.innerHTML = '';
 
-      summaryBox.style.display = 'block';
+  summaryBox.style.display = 'block';
 
-      summaryContent.innerHTML += `<div>Date: ${currentDate}</div><div>Name: ${name}</div><br>`;
-      tasks.forEach((task, index) => {
-        summaryContent.innerHTML += `
-          <div>Task ${index + 1}: ${task.text} (Completed: ${task.completed ? 'Yes' : 'No'})</div>
-        `;
-      });
-    }
+  summaryContent.innerHTML += `<div>Date: ${currentDate}</div><div>Name: ${name}</div><br>`;
+  
+  todayTasks.forEach((task, index) => {
+    summaryContent.innerHTML += `
+      <div>Task ${index + 1}: ${task.text} (Completed: ${task.completed ? 'Yes' : 'No'})</div>
+    `;
+  });
+}
 
     function viewSelectedDateTasks() {
       const selectedDate = document.getElementById('selectDate').value;
